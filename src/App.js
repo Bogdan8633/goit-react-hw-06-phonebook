@@ -8,7 +8,7 @@ import store from './redux/store';
 function App() {
   return (
     <Provider store={store}>
-      <BrowserRouter>
+      <BrowserRouter basename="goit-react-hw-06-phonebook">
         <UserRoutes />
       </BrowserRouter>
     </Provider>
