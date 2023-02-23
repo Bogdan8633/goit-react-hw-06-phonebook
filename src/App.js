@@ -9,6 +9,7 @@ function App() {
   return (
     <Provider store={store}>
       <BrowserRouter basename="goit-react-hw-06-phonebook">
+        {/* <BrowserRouter> */}
         <UserRoutes />
       </BrowserRouter>
     </Provider>
