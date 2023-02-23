@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { nanoid } from 'nanoid';
+import { useSelector, useDispatch } from 'react-redux';
 
 import MyContactsForm from './MyContactsForm/MyContactsForm';
 import MyContactList from './MyContactList/MyContactList';
 import MyContactsFilter from './MyContactsFilter/MyContactsFilter';
 
+import { addContact, deleteContact } from '../../redux/actions';
+
 const MyContacts = () => {
-  const [contacts, setContacts] = useState(() => {
-    const localSavedContacts = JSON.parse(localStorage.getItem('my-contacts'));
-    return localSavedContacts?.length ? localSavedContacts : [];
-  });
+  const contacts = useSelector(store => store.contacts);
   const [filter, setFilter] = useState('');
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     localStorage.setItem('my-contacts', JSON.stringify(contacts));
   }, [contacts]);
 
-  const addNewContact = ({ name, number }) => {
+  const handleAddContact = ({ name, number }) => {
     const normalaizedName = name.toLowerCase();
 
     if (
@@ -26,23 +27,20 @@ const MyContacts = () => {
       return false;
     }
 
-    setContacts(prevContacts => {
-      const contact = {
-        id: nanoid(),
-        name,
-        number,
-      };
-
-      return [...prevContacts, contact];
-    });
-    return true;
+    const action = addContact({ name, number });
+    dispatch(action);
   };
 
-  const deleteContact = id => {
-    setContacts(prevContacts =>
-      prevContacts.filter(contact => contact.id !== id)
-    );
+  const handleDeleteContact = id => {
+    const action = deleteContact(id);
+    dispatch(action);
   };
+
+  // const deleteContact = id => {
+  //   setContacts(prevContacts =>
+  //     prevContacts.filter(contact => contact.id !== id)
+  //   );
+  // };
 
   const changeFilter = e => {
     setFilter(e.target.value);
@@ -65,13 +63,13 @@ const MyContacts = () => {
   return (
     <div>
       <h1>Phonebook</h1>
-      <MyContactsForm onSubmit={addNewContact} />
+      <MyContactsForm onSubmit={handleAddContact} />
       <h2>Contacts</h2>
       <MyContactsFilter value={filter} onChange={changeFilter} />
       {isContacts && (
         <MyContactList
           contacts={visibleContacts}
-          onDeleteContact={deleteContact}
+          removeBook={handleDeleteContact}
         />
       )}
       {!isContacts && <p>No contacts in list, yet</p>}

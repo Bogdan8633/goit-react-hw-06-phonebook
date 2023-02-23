@@ -1,30 +1,33 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import initialState from './initialState';
+
 import styles from './myContactsForm.module.css';
 
 const MyContactsForm = ({ onSubmit }) => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [state, setState] = useState({ ...initialState });
 
-  const reset = () => {
-    setName('');
-    setNumber('');
+  const handleChange = ({ target }) => {
+    const { name, value } = target;
+    const newValue = value;
+    setState(prevState => {
+      return { ...prevState, [name]: newValue };
+    });
   };
 
-  const handleSubmt = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    const result = onSubmit({ name, number });
-    if (result) {
-      reset();
-    }
+    onSubmit({ ...state });
+    setState({ ...initialState });
   };
 
+  const { name, number } = state;
   return (
-    <form onSubmit={handleSubmt} className={styles.form}>
+    <form onSubmit={handleSubmit} className={styles.form}>
       <input
         value={name}
-        onChange={({ target }) => setName(target.value)}
+        onChange={handleChange}
         type="text"
         name="name"
         pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -33,7 +36,7 @@ const MyContactsForm = ({ onSubmit }) => {
       />
       <input
         value={number}
-        onChange={({ target }) => setNumber(target.value)}
+        onChange={handleChange}
         type="tel"
         name="number"
         pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
