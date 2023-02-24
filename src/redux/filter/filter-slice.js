@@ -10,13 +10,3 @@ const filterSlice = createSlice({
 
 export const { setFilter } = filterSlice.actions;
 export default filterSlice.reducer;
-
-// import { createReducer } from '@reduxjs/toolkit';
-
-// import { setFilter } from './filter-actions';
-
-// const filterReducer = createReducer('', {
-//   [setFilter]: (_, { payload }) => payload,
-// });
-
-// export default filterReducer;
