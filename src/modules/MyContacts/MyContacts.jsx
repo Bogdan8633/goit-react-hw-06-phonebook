@@ -4,17 +4,14 @@ import MyContactsForm from './MyContactsForm/MyContactsForm';
 import MyContactList from './MyContactList/MyContactList';
 import MyContactsFilter from './MyContactsFilter/MyContactsFilter';
 
-import {
-  addContact,
-  deleteContact,
-} from '../../redux/contacts/contacts-actions';
-import { setFilter } from 'redux/filter/filter-actions';
+import { addContact, deleteContact } from '../../redux/contacts/contacts-slice';
+import { setFilter } from '../../redux/filter/filter-slice';
 
 import {
   getAllContacts,
   getFilteredContacts,
 } from '../../redux/contacts/contacts-selectors';
-import { getFilter } from 'redux/filter/filter-selectors';
+import { getFilter } from '../../redux/filter/filter-selectors';
 
 const MyContacts = () => {
   const filteredContacts = useSelector(getFilteredContacts);
