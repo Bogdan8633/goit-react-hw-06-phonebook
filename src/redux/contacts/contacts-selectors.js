@@ -10,4 +10,3 @@ export const getFilteredContacts = ({ contacts, filter }) => {
     contact.name.toLowerCase().includes(normalizedFilter)
   );
 };
-export const getFilter = ({ filter }) => filter;
